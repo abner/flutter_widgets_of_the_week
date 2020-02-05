@@ -4,8 +4,8 @@
   "description": "Download Flutter Widget of the Week Videos",
   "main": "script.js",
   "dependencies": {
-    "youtube-dl": "^3.0.2",
-    "playwright": "0.10.0"
+    "playwright": "^0.10.0",
+    "youtube-dl": "^3.0.2"
   },
   "devDependencies": {
     "@types/youtube-dl": "^1.12.2",

@@ -1,7 +1,8 @@
 const fs = require("fs");
-
 const youtubedl = require("youtube-dl");
+const slug = require('slug');
 
+const promisify = require('util').promisify;
 // var videos = [
 //   "https://www.youtube.com/watch?v=b_sQ9bMltGU&list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG&index=2&t=0s",
 //   "https://www.youtube.com/watch?v=lkF0TQJO0bA&list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG&index=3&t=0s",
@@ -80,8 +81,13 @@ var videos = [
 
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
+const youtubeGetInfo = promisify(youtubedl.getInfo);
 videos.forEach(async videoUrl => {
   console.log(`Starting to download ${videoUrl}`);
+  const info = await youtubeGetInfo(videoUrl);
+  const targetFileName = slug(info.filename);
+
+  console.log(`Going to write to ${targetFileName}`);
   const videoDownload = youtubedl(
     videoUrl,
     // Optional arguments passed to youtube-dl.
@@ -90,12 +96,13 @@ videos.forEach(async videoUrl => {
     { cwd: __dirname }
   );
 
+  var filename = '';
   // Will be called when the download starts.
   videoDownload.on("info", function(info) {
     console.log("Download started");
     console.log("filename: " + info._filename);
     console.log("size: " + info.size);
   });
-
-  videoDownload.pipe(fs.createWriteStream("myvideo.mp4"));
+  
+  videoDownload.pipe(fs.createWriteStream(`${targetFileName}.mp4`));
 });

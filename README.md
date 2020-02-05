@@ -6,7 +6,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0 && npm install
 ```
 
 
-## Executar
+## How to run
 
 ```bash
 node script.js

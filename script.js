@@ -4,6 +4,15 @@ const slug = require('slug');
 const path = require('path');
 
 const promisify = require('util').promisify;
+
+// TODO: Given a playlist, query the HTML DOM to get the video urls
+// using puppeeter or similar tool, access page: https://www.youtube.com/playlist?list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG
+
+// parse html e query elements for get the url
+// document.querySelectorAll('a.ytd-playlist-video-renderer').forEach(el => arr.push(el.href))
+// 
+
+// TODO: parse the videos urls to get the index (index=) and identifier (v=) of the videos 
 // var videos = [
 //   "https://www.youtube.com/watch?v=b_sQ9bMltGU&list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG&index=2&t=0s",
 //   "https://www.youtube.com/watch?v=lkF0TQJO0bA&list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG&index=3&t=0s",

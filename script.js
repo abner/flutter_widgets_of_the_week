@@ -6,7 +6,7 @@ const path = require('path');
 const promisify = require('util').promisify;
 
 // TODO: Given a playlist, query the HTML DOM to get the video urls
-// using puppeeter or similar tool, access page: https://www.youtube.com/playlist?list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG
+// using puppeeter or similar tool (https://github.com/microsoft/playwright), access page: https://www.youtube.com/playlist?list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG
 
 // parse html e query elements for get the url
 // document.querySelectorAll('a.ytd-playlist-video-renderer').forEach(el => arr.push(el.href))

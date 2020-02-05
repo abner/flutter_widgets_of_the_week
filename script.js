@@ -1,6 +1,7 @@
 const fs = require("fs");
 const youtubedl = require("youtube-dl");
 const slug = require('slug');
+const path = require('path');
 
 const promisify = require('util').promisify;
 // var videos = [
@@ -83,26 +84,35 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 const youtubeGetInfo = promisify(youtubedl.getInfo);
 videos.forEach(async videoUrl => {
-  console.log(`Starting to download ${videoUrl}`);
-  const info = await youtubeGetInfo(videoUrl);
-  const targetFileName = slug(info.filename);
+  try {
+    console.log(`Starting to download ${videoUrl}`);
+    const info = await youtubeGetInfo(videoUrl);
 
-  console.log(`Going to write to ${targetFileName}`);
-  const videoDownload = youtubedl(
-    videoUrl,
-    // Optional arguments passed to youtube-dl.
-    ["--format=18", "--no-check-certificate"],
-    // Additional options can be given for calling `child_process.execFile()`.
-    { cwd: __dirname }
-  );
+    console.log('JSON:' + JSON.stringify(info));
+    const targetFileName = slug(path.basename(info._filename));
 
-  var filename = '';
-  // Will be called when the download starts.
-  videoDownload.on("info", function(info) {
-    console.log("Download started");
-    console.log("filename: " + info._filename);
-    console.log("size: " + info.size);
-  });
-  
-  videoDownload.pipe(fs.createWriteStream(`${targetFileName}.mp4`));
+    console.log(`Going to write to ${targetFileName}`);
+    const videoDownload = youtubedl(
+      videoUrl,
+      // Optional arguments passed to youtube-dl.
+      ["--format=18", "--no-check-certificate"],
+      // Additional options can be given for calling `child_process.execFile()`.
+      {
+        cwd: __dirname
+      }
+    );
+
+    var filename = '';
+    // Will be called when the download starts.
+    videoDownload.on("info", function (info) {
+      console.log("Download started");
+      console.log("filename: " + info._filename);
+      console.log("size: " + info.size);
+    });
+
+    videoDownload.pipe(fs.createWriteStream(`${targetFileName}.mp4`));
+
+  } catch (e) {
+    console.error(`ERROR: ${e.message}`);
+  }
 });
